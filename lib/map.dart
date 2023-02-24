@@ -1,56 +1,139 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sqf_lite_flutter/add_data.dart';
+
+import 'LocationService.dart';
 
 class MapSample extends StatefulWidget {
   const MapSample({Key? key}) : super(key: key);
 
   @override
-  State<MapSample> createState() => MapSampleState();
-
+  _MapSampleState createState() => _MapSampleState();
 }
 
+class _MapSampleState extends State<MapSample> {
 
+  Completer<GoogleMapController> _controller = Completer();
 
-class MapSampleState extends State<MapSample> {
-  final Completer<GoogleMapController> _controller =
-  Completer<GoogleMapController>();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+  static final CameraPosition _initialCameraPosition = CameraPosition(
+    target: LatLng(33.515343, 36.289590),
     zoom: 14.4746,
   );
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-  late GoogleMapController GMC;
+  LatLng currentLocation = _initialCameraPosition.target;
+
+  BitmapDescriptor? _locationIcon;
+
+  Set<Marker> _markers = {};
+
+  Set<Polyline> _polylines = {};
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          GMC=controller;
-          _controller.complete(controller);
-        },
+    return new Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(onPressed: (){}, icon: Icon(Icons.search))
+        ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          GoogleMap(
+            initialCameraPosition: _initialCameraPosition,
+            mapType: MapType.normal,
+            onMapCreated: (controller) async {
+              String style = await DefaultAssetBundle.of(context)
+                  .loadString('assets/map_style.json');
+              //customize your map style at: https://mapstyle.withgoogle.com/
+              controller.setMapStyle(style);
+              _controller.complete(controller);
+            },
+            onCameraMove:(CameraPosition newPos){
+              setState(() {
+                currentLocation=newPos.target;
+              });
+            },
+            markers: _markers,
+            polylines: _polylines,
+          ),
+          SizedBox(
+            width: 40,
+            height: 40,
+            child: Image.network('https://github.com/mohammedbabelly/google_maps_demo/raw/master/assets/images/location_icon.png'),
+          )
+        ],
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: (){},
+            child: Icon(Icons.settings_ethernet_rounded),
+          ),
+          FloatingActionButton(
+          onPressed: () => _setMarker(currentLocation),
+            child: Icon(Icons.location_on),
+          ),
+          FloatingActionButton(
+            onPressed: () => _getMyLocation(),
+            child: Icon(Icons.gps_fixed),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        height: 20,
+        alignment: Alignment.center,
+        child: Text(
+            "lat: ${currentLocation.latitude}, long: ${currentLocation.longitude}"),
       ),
     );
   }
 
-  Future<void> _goToTheLake() async {
+
+  Future<void> _getMyLocation() async {
+    Position _myLocation = await LocationService().getLocation();
+    print(_myLocation);
+    _animateCamera(LatLng(_myLocation.latitude!, _myLocation.longitude!));
+    setState(() {});
+
+  }
+
+
+
+  Future<void> _animateCamera(LatLng _location) async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    CameraPosition _cameraPosition = CameraPosition(
+      target: _location,
+      zoom: 13.00,
+    );
+    print(
+        "animating camera to (lat: ${_location.latitude}, long: ${_location.longitude}");
+    controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
+  }
+
+  void _setMarker(LatLng _location) {
+    Marker newMarker = Marker(
+      markerId: MarkerId(_location.toString()),
+      icon: BitmapDescriptor.defaultMarker,
+      // icon: _locationIcon,
+      position: _location,
+      infoWindow: InfoWindow(
+          title: "Title",
+          snippet: "${currentLocation.latitude}, ${currentLocation.longitude}"),
+    );
+    _markers.add(newMarker);
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return AddData(longitude: currentLocation.latitude,latitude: currentLocation.latitude);
+
+    }));
+    setState(() {});
   }
 }

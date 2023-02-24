@@ -50,6 +50,7 @@ dependencies:
   sqflite:
   path_provider:
   google_maps_flutter: ^2.2.4
+  geolocator: ^9.0.2
 
 
 dev_dependencies:

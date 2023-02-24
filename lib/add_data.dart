@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,9 @@ import 'package:sqf_lite_flutter/main.dart';
 import 'package:sqf_lite_flutter/model.dart';
 
 class AddData extends StatefulWidget {
-  const AddData({Key? key}) : super(key: key);
+   AddData({Key? key, required this.latitude, required this.longitude,}) : super(key: key);
+  final double longitude;
+  final double latitude;
 
   @override
   State<AddData> createState() => _AddDataState();
@@ -24,6 +27,8 @@ class _AddDataState extends State<AddData> {
   @override
   void initState() {
     super.initState();
+    title.text=widget.latitude.toString();
+    email.text=widget.longitude.toString();
     dbHelper = DBHelper();
   }
   final Completer<GoogleMapController> _controller =
@@ -56,6 +61,7 @@ class _AddDataState extends State<AddData> {
                 controller: title,
                 decoration: InputDecoration(
                   hintText: 'Title',
+
                   fillColor: const Color(0xffe9e9e9),
                   filled: true,
                   border: InputBorder.none,
@@ -140,7 +146,6 @@ class _AddDataState extends State<AddData> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Colors.deepPurple,
-                  minimumSize: const Size(250, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
