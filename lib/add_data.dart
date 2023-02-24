@@ -27,8 +27,8 @@ class _AddDataState extends State<AddData> {
   @override
   void initState() {
     super.initState();
-    age.text=widget.latitude.toString();
-    email.text=widget.longitude.toString();
+    age.text=widget.latitude.toStringAsFixed(3);
+    email.text=widget.longitude.toStringAsFixed(3);
     dbHelper = DBHelper();
   }
   final Completer<GoogleMapController> _controller =
@@ -81,6 +81,7 @@ class _AddDataState extends State<AddData> {
                   height: 20,
                 ),
                 TextField(
+                  enabled: false,
                   controller: email,
                   decoration: InputDecoration(
                     hintText: 'email',
@@ -101,6 +102,7 @@ class _AddDataState extends State<AddData> {
                   height: 20,
                 ),
                 TextField(
+                  enabled: false,
                   controller: age,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(

@@ -57,16 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My SQF Lite DataBase'),
+        title: const Text('To-Do on Location'),
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
-        leading: ElevatedButton(onPressed: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const MapSample()),
-          );
 
-        },child: Text("map")),
       ),
 
 
@@ -152,7 +146,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         // onPressed: navigator,
-        onPressed: (){},
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MapSample()),
+          );
+        },
         foregroundColor: Colors.white,
         backgroundColor: Colors.deepPurple,
         child: const Icon(Icons.add),
