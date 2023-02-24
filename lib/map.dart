@@ -131,9 +131,9 @@ class _MapSampleState extends State<MapSample> {
     );
     _markers.add(newMarker);
     Navigator.push(context, MaterialPageRoute(builder: (context){
-      return AddData(longitude: currentLocation.latitude,latitude: currentLocation.latitude);
+      return AddData(longitude: currentLocation.longitude,latitude: currentLocation.latitude);
 
     }));
-    setState(() {});
+    // setState(() {});
   }
 }

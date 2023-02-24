@@ -130,14 +130,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Center(
                               child: ListTile(
                                 title: Text(
-                                  snapshot.data![index].title + '        (' + snapshot.data![index].email.toString() + ')',
+                                  snapshot.data![index].title
                                 ),
                                 subtitle: Text(
                                   snapshot.data![index].description,
                                 ),
-                                trailing: Text(
-                                  snapshot.data![index].age.toString(),
-                                ),
+
                               ))),
                     ),
                   ),
