@@ -44,10 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
     loadData();
   }
 
-  navigator() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const AddData()));
-  }
+  // navigator() {
+  //   Navigator.of(context)
+  //       .push(MaterialPageRoute(builder: (context) => const AddData()));
+  // }
 
   loadData() {
     noteList = dbHelper!.getCartListWithUserId();
@@ -153,7 +153,8 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: navigator,
+        // onPressed: navigator,
+        onPressed: (){},
         foregroundColor: Colors.white,
         backgroundColor: Colors.deepPurple,
         child: const Icon(Icons.add),
