@@ -4,7 +4,7 @@
 class NotesModel {
   final int? id;
   final String title;
-  final int age;
+  final String age;
   final String description;
   final String? email;
 
