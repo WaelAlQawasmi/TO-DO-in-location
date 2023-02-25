@@ -52,6 +52,8 @@ dependencies:
   google_maps_flutter: ^2.2.4
   geolocator: ^9.0.2
   location: ^4.4.0
+  flutter_local_notifications: ^8.2.0
+  workmanager: ^0.5.1
 
 
 dev_dependencies:

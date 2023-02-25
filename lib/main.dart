@@ -5,11 +5,17 @@ import 'package:geolocator/geolocator.dart';
 import 'package:sqf_lite_flutter/add_data.dart';
 import 'package:sqf_lite_flutter/map.dart';
 import 'package:sqf_lite_flutter/model.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'LocationService.dart';
+import 'NotificationService.dart';
 import 'db.dart';
 
-void main() {
+Future<void> main() async {
+
+
+
+
   runApp(const MyApp());
 }
 
@@ -65,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void setData(){
     _getMyLocation();
+    loadPostionNotes;
     loadPostionNotes(_myLocation?.longitude.toStringAsFixed(3));
     setState(() {
 

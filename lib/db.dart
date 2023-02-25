@@ -1,8 +1,10 @@
 import 'dart:io' as io;
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'model.dart';
 
@@ -47,6 +49,9 @@ class DBHelper {
   Future<List<NotesModel>> postionNotes(var long) async {
     // get a reference to the database
     var dbClient = await db;
+    // showNotification  (title: 'Samira', body: 'Heyy theree !!!', payload: 'samira');
+
+
     // raw query
     List<Map<String, Object?>>? queryResult = await dbClient?.rawQuery(
         'SELECT * FROM notes WHERE email=?', [long]);
@@ -91,4 +96,36 @@ class DBHelper {
     var dbClient = await db;
     dbClient!.close();
   }
+
+
+
+
+  static final _notifications = FlutterLocalNotificationsPlugin();
+  static Future _notificationDetails() async {
+    return const NotificationDetails(
+      android:  AndroidNotificationDetails(
+          ' channel id',
+          ' channel name',
+          ' channel description',
+          importance: Importance.max,
+          priority: Priority.high
+      ),
+      //iOS: IOSNotificationDetails(),
+    );
+  }
+  static Future showNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payload,
+  }) async =>
+      _notifications.show(
+        id,
+        title,
+        body,
+        await _notificationDetails(),
+        payload: payload,
+      );
+
+
 }
