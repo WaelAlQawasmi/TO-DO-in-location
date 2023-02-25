@@ -86,7 +86,7 @@ class _MapSampleState extends State<MapSample> {
           FloatingActionButton(
             heroTag: "btn2",
 
-            onPressed: () => _getMyLocation(),
+            onPressed: () => _getMyLocation,
             child: Icon(Icons.gps_fixed),
           ),
         ],
@@ -106,6 +106,16 @@ class _MapSampleState extends State<MapSample> {
     _animateCamera(LatLng(_myLocation.latitude!, _myLocation.longitude!));
   }
 
+  void _setMyLocation(){
+    //_getMyLocation();
+   // _initialCameraPosition;
+    print(
+        "animating camera to (lat: ${_initialCameraPosition}, long: ${_initialCameraPosition}");
+    setState(() {
+
+    });
+
+  }
 
   Future<void> _animateCamera(LatLng _location) async {
     final GoogleMapController controller = await _controller.future;
@@ -115,12 +125,8 @@ class _MapSampleState extends State<MapSample> {
     );
     print(
         "animating camera to (lat: ${_location.latitude}, long: ${_location.longitude}");
+    _initialCameraPosition=_cameraPosition;
 
-    setState(() {
-
-      _initialCameraPosition=_cameraPosition;
-
-    });
   }
 
   void _setMarker(LatLng _location) {

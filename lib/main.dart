@@ -39,6 +39,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late Future<List<NotesModel>> noteList;
+  late Future<List<NotesModel>> PostionNotes;
   DBHelper? dbHelper;
   Position? _myLocation;
   Timer? timer;
@@ -63,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void setData(){
     _getMyLocation();
+    loadPostionNotes(_myLocation?.longitude.toStringAsFixed(3));
     setState(() {
 
     });
@@ -76,6 +78,12 @@ class _MyHomePageState extends State<MyHomePage> {
   loadData() {
     noteList = dbHelper!.getCartListWithUserId();
   }
+
+  loadPostionNotes(var long) {
+    PostionNotes = dbHelper!.postionNotes(long);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,10 +100,96 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Container(
           child: Column(
             children: [
-              Center(child: Text("${_myLocation?.longitude}"),),
+              Center(child: Text("${"in this Location you have do"}"),),
+              Container(
+                height: 400,
+                child: FutureBuilder(
+                  future: PostionNotes,
+                  builder: (context, AsyncSnapshot<List<NotesModel>> snapshot) {
+                    if(snapshot.hasData){
+                      if (snapshot.data! == null) {
+                        return SizedBox();
+                      }
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return Dismissible(
+                            direction: DismissDirection.startToEnd,
+                            background: Container(
+                              margin: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: Colors.red,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: const [
+                                  Icon(Icons.delete,color: Colors.white,size: 50,),
+                                ],
+                              ),
+                            ),
+                            key: ValueKey<int>(snapshot.data![index].id!),
+                            child: Dismissible(
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                margin: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: Colors.red,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.delete,color: Colors.white,size: 50,),
+                                  ],
+                                ),
+                              ),
+                              key: ValueKey<int>(snapshot.data![index].id!),
+                              onDismissed: (DismissDirection direction) {
+                                setState(() {
+                                  dbHelper?.deleteProduct(snapshot.data![index].id!);
+                                  noteList = dbHelper!.getCartListWithUserId();
+                                  snapshot.data?.remove(snapshot.data![index]);
+                                });
+                              },
+                              child: Card(
+                                margin: const EdgeInsets.all(8),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                shadowColor: Colors.amber,
+                                elevation: 4,
+                                semanticContainer: true,
+                                child: SizedBox(
+                                    height: 90,
+                                    child: Center(
+                                        child: ListTile(
+                                          title: Text(
+                                              snapshot.data![index].title
+                                          ),
+                                          subtitle: Text(
+                                            snapshot.data![index].description,
+                                          ),
+
+                                        ))),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }else{
+                      return new Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                  },
+                ),
+              ),
 
               Container(
-                height: 800,
+                height: 400,
                 child: FutureBuilder(
                   future: noteList,
                   builder: (context, AsyncSnapshot<List<NotesModel>> snapshot) {
