@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:sqf_lite_flutter/add_data.dart';
 
 import 'LocationService.dart';
@@ -17,7 +19,7 @@ class _MapSampleState extends State<MapSample> {
 
   Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _initialCameraPosition = CameraPosition(
+  static  CameraPosition _initialCameraPosition = CameraPosition(
     target: LatLng(33.515343, 36.289590),
     zoom: 14.4746,
   );
@@ -74,15 +76,16 @@ class _MapSampleState extends State<MapSample> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+
           FloatingActionButton(
-            onPressed: (){},
-            child: Icon(Icons.settings_ethernet_rounded),
-          ),
-          FloatingActionButton(
-          onPressed: () => _setMarker(currentLocation),
+            heroTag: "btn1",
+
+            onPressed: () => _setMarker(currentLocation),
             child: Icon(Icons.location_on),
           ),
           FloatingActionButton(
+            heroTag: "btn2",
+
             onPressed: () => _getMyLocation(),
             child: Icon(Icons.gps_fixed),
           ),
@@ -97,15 +100,11 @@ class _MapSampleState extends State<MapSample> {
     );
   }
 
-
   Future<void> _getMyLocation() async {
-    Position _myLocation = await LocationService().getLocation();
+    Position? _myLocation = (await LocationService().determinePosition()) ;
     print(_myLocation);
     _animateCamera(LatLng(_myLocation.latitude!, _myLocation.longitude!));
-    setState(() {});
-
   }
-
 
 
   Future<void> _animateCamera(LatLng _location) async {
@@ -116,7 +115,12 @@ class _MapSampleState extends State<MapSample> {
     );
     print(
         "animating camera to (lat: ${_location.latitude}, long: ${_location.longitude}");
-    controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
+
+    setState(() {
+
+      _initialCameraPosition=_cameraPosition;
+
+    });
   }
 
   void _setMarker(LatLng _location) {
