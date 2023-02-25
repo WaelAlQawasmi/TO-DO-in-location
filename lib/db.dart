@@ -4,7 +4,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:workmanager/workmanager.dart';
 
 import 'model.dart';
 
@@ -49,7 +48,6 @@ class DBHelper {
   Future<List<NotesModel>> postionNotes(var long) async {
     // get a reference to the database
     var dbClient = await db;
-    // showNotification  (title: 'Samira', body: 'Heyy theree !!!', payload: 'samira');
 
 
     // raw query
@@ -61,6 +59,8 @@ class DBHelper {
       return queryResult2.map((e) => NotesModel.fromMap(e)).toList();
     }
     else {
+       // showNotification  (title: 'اعمال في هذا الموقع', body: 'لديك العديد من المهمات التي يجب ان تنجزها في هذا الموقع !!!', payload: 'To-Do');
+
       return queryResult.map((e) => NotesModel.fromMap(e)).toList();
       // {_id: 2, name: Mary, age: 32}
     }
@@ -108,8 +108,10 @@ class DBHelper {
           ' channel name',
           ' channel description',
           importance: Importance.max,
-          priority: Priority.high
-      ),
+          priority: Priority.high,
+          icon: "@mipmap/ic_launcher"
+
+    ),
       //iOS: IOSNotificationDetails(),
     );
   }

@@ -4,9 +4,11 @@ import 'dart:ffi';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sqf_lite_flutter/db.dart';
-import 'package:sqf_lite_flutter/main.dart';
-import 'package:sqf_lite_flutter/model.dart';
+
+import 'db.dart';
+import 'main.dart';
+import 'model.dart';
+
 
 class AddData extends StatefulWidget {
    AddData({Key? key, required this.latitude, required this.longitude,}) : super(key: key);
