@@ -49,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     dbHelper = DBHelper();
     loadData();
     _getMyLocation();
+    loadPostionNotes( _myLocation?.longitude.toStringAsFixed(3));
      timer = Timer.periodic(Duration(seconds: 15), (Timer t) => setData());
 
   }
@@ -98,40 +99,111 @@ class _MyHomePageState extends State<MyHomePage> {
 
       body: SingleChildScrollView(
         child: Container(
+          height: 800,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Center(child: Text("${"in this Location you have do"}"),),
               Container(
-                height: 400,
-                child: FutureBuilder(
-                  future: PostionNotes,
-                  builder: (context, AsyncSnapshot<List<NotesModel>> snapshot) {
-                    if(snapshot.hasData){
-                      if (snapshot.data! == null) {
-                        return SizedBox();
+                  height: 300,
+                  child: FutureBuilder(
+                    future: PostionNotes,
+                    builder: (context, AsyncSnapshot<List<NotesModel>> snapshot) {
+                      if(snapshot.hasData){
+                        if (snapshot.data! == null) {
+                          return SizedBox();
+                        }
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return Dismissible(
+                              direction: DismissDirection.startToEnd,
+                              background: Container(
+                                margin: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: Colors.red,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.delete,color: Colors.white,size: 50,),
+                                  ],
+                                ),
+                              ),
+                              key: ValueKey<int>(snapshot.data![index].id!),
+                              child: Dismissible(
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  margin: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: Colors.red,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.delete,color: Colors.white,size: 50,),
+                                    ],
+                                  ),
+                                ),
+                                key: ValueKey<int>(snapshot.data![index].id!),
+                                onDismissed: (DismissDirection direction) {
+                                  setState(() {
+                                    dbHelper?.deleteProduct(snapshot.data![index].id!);
+                                    noteList = dbHelper!.getCartListWithUserId();
+                                    snapshot.data?.remove(snapshot.data![index]);
+                                  });
+                                },
+                                child: Card(
+                                  margin: const EdgeInsets.all(8),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  shadowColor: Colors.amber,
+                                  elevation: 4,
+                                  semanticContainer: true,
+                                  child: SizedBox(
+                                      height: 90,
+                                      child: Center(
+                                          child: ListTile(
+                                            title: Text(
+                                                snapshot.data![index].title
+                                            ),
+                                            subtitle: Text(
+                                              snapshot.data![index].description,
+                                            ),
+
+                                          ))),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }else{
+                        return new Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return Dismissible(
-                            direction: DismissDirection.startToEnd,
-                            background: Container(
-                              margin: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: Colors.red,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.delete,color: Colors.white,size: 50,),
-                                ],
-                              ),
-                            ),
-                            key: ValueKey<int>(snapshot.data![index].id!),
-                            child: Dismissible(
-                              direction: DismissDirection.endToStart,
+
+                    },
+                  ),
+                ),
+
+              Center(child: Text("${"All task"}"),),
+
+                 Container(
+                  height: 300,
+                  child: FutureBuilder(
+                    future: noteList,
+                    builder: (context, AsyncSnapshot<List<NotesModel>> snapshot) {
+                      if(snapshot.hasData){
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return Dismissible(
+                              direction: DismissDirection.startToEnd,
                               background: Container(
                                 margin: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
@@ -147,130 +219,64 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                               key: ValueKey<int>(snapshot.data![index].id!),
-                              onDismissed: (DismissDirection direction) {
-                                setState(() {
-                                  dbHelper?.deleteProduct(snapshot.data![index].id!);
-                                  noteList = dbHelper!.getCartListWithUserId();
-                                  snapshot.data?.remove(snapshot.data![index]);
-                                });
-                              },
-                              child: Card(
-                                margin: const EdgeInsets.all(8),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                shadowColor: Colors.amber,
-                                elevation: 4,
-                                semanticContainer: true,
-                                child: SizedBox(
-                                    height: 90,
-                                    child: Center(
-                                        child: ListTile(
-                                          title: Text(
+                              child: Dismissible(
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  margin: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: Colors.red,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.delete,color: Colors.white,size: 50,),
+                                    ],
+                                  ),
+                                ),
+                                key: ValueKey<int>(snapshot.data![index].id!),
+                                onDismissed: (DismissDirection direction) {
+                                  setState(() {
+                                    dbHelper?.deleteProduct(snapshot.data![index].id!);
+                                    noteList = dbHelper!.getCartListWithUserId();
+                                    snapshot.data?.remove(snapshot.data![index]);
+                                  });
+                                },
+                                child: Card(
+                                  margin: const EdgeInsets.all(8),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  shadowColor: Colors.amber,
+                                  elevation: 4,
+                                  semanticContainer: true,
+                                  child: SizedBox(
+                                      height: 90,
+                                      child: Center(
+                                          child: ListTile(
+                                            title: Text(
                                               snapshot.data![index].title
-                                          ),
-                                          subtitle: Text(
-                                            snapshot.data![index].description,
-                                          ),
+                                            ,style: TextStyle(color: Colors.redAccent),),
+                                            subtitle: Text(
+                                              snapshot.data![index].description,
+                                            ),
 
-                                        ))),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }else{
-                      return new Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                  },
-                ),
-              ),
-
-              Container(
-                height: 400,
-                child: FutureBuilder(
-                  future: noteList,
-                  builder: (context, AsyncSnapshot<List<NotesModel>> snapshot) {
-                    if(snapshot.hasData){
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return Dismissible(
-                            direction: DismissDirection.startToEnd,
-                            background: Container(
-                              margin: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: Colors.red,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Icon(Icons.delete,color: Colors.white,size: 50,),
-                                ],
-                              ),
-                            ),
-                            key: ValueKey<int>(snapshot.data![index].id!),
-                            child: Dismissible(
-                              direction: DismissDirection.endToStart,
-                              background: Container(
-                                margin: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: Colors.red,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.delete,color: Colors.white,size: 50,),
-                                  ],
+                                          ))),
                                 ),
                               ),
-                              key: ValueKey<int>(snapshot.data![index].id!),
-                              onDismissed: (DismissDirection direction) {
-                                setState(() {
-                                  dbHelper?.deleteProduct(snapshot.data![index].id!);
-                                  noteList = dbHelper!.getCartListWithUserId();
-                                  snapshot.data?.remove(snapshot.data![index]);
-                                });
-                              },
-                              child: Card(
-                                margin: const EdgeInsets.all(8),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                shadowColor: Colors.amber,
-                                elevation: 4,
-                                semanticContainer: true,
-                                child: SizedBox(
-                                    height: 90,
-                                    child: Center(
-                                        child: ListTile(
-                                          title: Text(
-                                            snapshot.data![index].title
-                                          ),
-                                          subtitle: Text(
-                                            snapshot.data![index].description,
-                                          ),
+                            );
+                          },
+                        );
+                      }else{
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-                                        ))),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }else{
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                  },
+                    },
+                  ),
                 ),
-              ),
+
             ],
           ),
         ),
