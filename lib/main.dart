@@ -55,10 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     dbHelper = DBHelper();
     loadData();
-    // _getMyLocation();
+     _getMyLocation();
     loadPostionNotes(_myLocation?.longitude.toStringAsFixed(3));
     print(_myLocation?.longitude.toString());
-    timer = Timer.periodic(Duration(minutes: 1), (Timer t) => setData());
+    timer = Timer.periodic(Duration(seconds: 15), (Timer t) => setData());
   }
 
   Future<void> _getMyLocation() async {
@@ -69,6 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void setData() {
     _getMyLocation();
     loadPostionNotes(_myLocation?.longitude.toStringAsFixed(3));
+    setState(() {
+
+    });
   }
 
   // navigator() {

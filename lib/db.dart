@@ -59,7 +59,7 @@ class DBHelper {
       return queryResult2.map((e) => NotesModel.fromMap(e)).toList();
     }
     else {
-       // showNotification  (title: 'اعمال في هذا الموقع', body: 'لديك العديد من المهمات التي يجب ان تنجزها في هذا الموقع !!!', payload: 'To-Do');
+      showNotification  (title: 'اعمال في هذا الموقع', body: 'لديك العديد من المهمات التي يجب ان تنجزها في هذا الموقع !!!', payload: 'To-Do');
 
       return queryResult.map((e) => NotesModel.fromMap(e)).toList();
       // {_id: 2, name: Mary, age: 32}
