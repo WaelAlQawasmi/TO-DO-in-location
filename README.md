@@ -8,22 +8,21 @@ Location Takes it is application to remind the user with tha tasks that the user
 - The user can delete the tasks after do it in location 
 
 
-![](./screenshot/notifecation.jpeg)
 ## Screenshots
 <p float="left">
-- Home page
-  <img src="/screenshot/allTaskes.jpeg">
-- Find the tasks in current location
-  <img src="./screenshot/lodingTask.jpeg">
-- Retrieve the Location tasks
-  <img src="./screenshot/inLocationTaskVlue.jpeg">
-- Add the data of the task
-  <img src="./screenshot/addNewTask.jpeg">
--  Take the location of new task
-  <img src="./screenshot/getLocationFromMap.jpeg">
+<p> Home page </p>
+ <div> <img src="/screenshot/allTaskes.jpeg"></div>
+<p>Find the tasks in current location</p>
+  <div><img src="./screenshot/lodingTask.jpeg"> </div>
+<p> Retrieve the Location tasks</p>
+  <div> <img src="./screenshot/inLocationTaskVlue.jpeg"></div>
+<p> Add the data of the task</p>
+  <div> <img src="./screenshot/addNewTask.jpeg"></div>
+<p>  Take the location of new task </p>
+  <div> <img src="./screenshot/getLocationFromMap.jpeg"></div>
 
-- Notify the user about the takes in the location
-  <img src="./screenshot/notifecation.jpeg">
+<p> Notify the user about the takes in the location</p>
+  <div> <img src="./screenshot/notifecation.jpeg"></div>
 
 </p>
 
