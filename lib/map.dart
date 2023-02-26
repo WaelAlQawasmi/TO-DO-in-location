@@ -4,9 +4,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:sqf_lite_flutter/add_data.dart';
 
 import 'LocationService.dart';
+import 'add_data.dart';
 
 class MapSample extends StatefulWidget {
   const MapSample({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
 
   static  CameraPosition _initialCameraPosition = CameraPosition(
-    target: LatLng(33.515343, 36.289590),
+    target: LatLng(32.5712103, 35.8512719),
     zoom: 14.4746,
   );
 
@@ -40,10 +40,10 @@ class _MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+
       appBar: AppBar(
-        actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.search))
-        ],
+      title: Text("اختار الموقع "),
       ),
       body: Stack(
         alignment: Alignment.center,
@@ -69,7 +69,7 @@ class _MapSampleState extends State<MapSample> {
           SizedBox(
             width: 40,
             height: 40,
-            child: Image.network('https://github.com/mohammedbabelly/google_maps_demo/raw/master/assets/images/location_icon.png'),
+            child: Image.asset('assets/images/location_icon.png'),
           )
         ],
       ),
@@ -79,16 +79,10 @@ class _MapSampleState extends State<MapSample> {
 
           FloatingActionButton(
             heroTag: "btn1",
-
             onPressed: () => _setMarker(currentLocation),
             child: Icon(Icons.location_on),
           ),
-          FloatingActionButton(
-            heroTag: "btn2",
 
-            onPressed: () => _getMyLocation(),
-            child: Icon(Icons.gps_fixed),
-          ),
         ],
       ),
       bottomNavigationBar: Container(
@@ -106,6 +100,16 @@ class _MapSampleState extends State<MapSample> {
     _animateCamera(LatLng(_myLocation.latitude!, _myLocation.longitude!));
   }
 
+  void _setMyLocation(){
+    //_getMyLocation();
+   // _initialCameraPosition;
+    print(
+        "animating camera to (lat: ${_initialCameraPosition}, long: ${_initialCameraPosition}");
+    setState(() {
+
+    });
+
+  }
 
   Future<void> _animateCamera(LatLng _location) async {
     final GoogleMapController controller = await _controller.future;
@@ -115,12 +119,8 @@ class _MapSampleState extends State<MapSample> {
     );
     print(
         "animating camera to (lat: ${_location.latitude}, long: ${_location.longitude}");
+    _initialCameraPosition=_cameraPosition;
 
-    setState(() {
-
-      _initialCameraPosition=_cameraPosition;
-
-    });
   }
 
   void _setMarker(LatLng _location) {

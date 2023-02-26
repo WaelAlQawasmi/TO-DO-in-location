@@ -4,9 +4,11 @@ import 'dart:ffi';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sqf_lite_flutter/db.dart';
-import 'package:sqf_lite_flutter/main.dart';
-import 'package:sqf_lite_flutter/model.dart';
+
+import 'db.dart';
+import 'main.dart';
+import 'model.dart';
+
 
 class AddData extends StatefulWidget {
    AddData({Key? key, required this.latitude, required this.longitude,}) : super(key: key);
@@ -47,9 +49,9 @@ class _AddDataState extends State<AddData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.cyan,
         toolbarHeight: 89,
-        title: const Text('Add Data'),
+        title: const Text('تسجيل مهمة في الموقع'),
         centerTitle: true,
       ),
       body: Padding(
@@ -62,18 +64,19 @@ class _AddDataState extends State<AddData> {
                 TextField(
                   controller: title,
                   decoration: InputDecoration(
-                    hintText: 'Title',
+                    hintText: 'العنوان',
 
                     fillColor: const Color(0xffe9e9e9),
                     filled: true,
                     border: InputBorder.none,
+                    prefixIcon: Icon(Icons.title_outlined),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: Colors.black26),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: Colors.cyan),
                     ),
                   ),
                 ),
@@ -84,17 +87,18 @@ class _AddDataState extends State<AddData> {
                   enabled: false,
                   controller: email,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.location_on_outlined),
                     hintText: 'email',
                     fillColor: const Color(0xffe9e9e9),
                     filled: true,
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: Colors.black26),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: Colors.cyan),
                     ),
                   ),
                 ),
@@ -102,17 +106,20 @@ class _AddDataState extends State<AddData> {
                   height: 20,
                 ),
                 TextField(
+
                   enabled: false,
+
                   controller: age,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: 'Age',
+                    prefixIcon: Icon(Icons.location_on_outlined),
                     fillColor: const Color(0xffe9e9e9),
                     filled: true,
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: Colors.black26),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -129,18 +136,20 @@ class _AddDataState extends State<AddData> {
                   controller: description,
                   maxLines: 4,
                   minLines: 2,
+                  keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    hintText: 'Description',
+                    prefixIcon: Icon(Icons.discount_rounded),
+                    hintText: 'وصف المهة',
                     fillColor: const Color(0xffe9e9e9),
                     filled: true,
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: Colors.black26),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: Colors.cyan),
                     ),
                   ),
                 ),
@@ -149,13 +158,13 @@ class _AddDataState extends State<AddData> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.deepPurple,
+                    primary: Colors.cyan,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                   child: const Text(
-                    'Add Data',
+                    'اضافة',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -179,8 +188,9 @@ class _AddDataState extends State<AddData> {
                       }
                     });
                     title.clear();
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => const MyHomePage()));
+
+                        Navigator.pushReplacementNamed(context, "Home");
+
                   },
                 ),
               ],

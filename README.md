@@ -1,21 +1,31 @@
-# Hi, I'm NASEER! 👋
-#sqflite_flutter
+# Hi, In Location Takes  👋
+# Location Takes
+Location Takes it is application to remind the user with tha tasks that the user should do  it in each location store in the app.
+## Possess flow
+- The user  should  add the tasks that the user would like to do it in the specific location
+- The app will load all task and The task on current location
+- The app will send notifications in case there any tasks in  user current location
+- The user can delete the tasks after do it in location 
 
-SQFlite is a plugin in flutter which is used to store the data. In SQFlite we perform many operations like create, delete, update, etc. This operation is called CRUD Operations. Using this we can easily store the data in a local database.
 
-
-
-## Authors
-
-- [@Muhammad Naseer](https://www.github.com/naseerx)
-
----
-
+![](./screenshot/notifecation.jpeg)
 ## Screenshots
 <p float="left">
-  <img src="https://github.com/naseerx/sqf_lite_flutter/blob/master/screenshot/Screenshot_20221031-115552.png">
-  <img src="https://github.com/naseerx/sqf_lite_flutter/blob/master/screenshot/Screenshot_20221031-115651.png">
+- Home page
+  <img src="/screenshot/allTaskes.jpeg">
+- Find the tasks in current location
+  <img src="./screenshot/lodingTask.jpeg">
+- Retrieve the Location tasks
+  <img src="./screenshot/inLocationTaskVlue.jpeg">
+- Add the data of the task
+  <img src="./screenshot/addNewTask.jpeg">
+-  Take the location of new task
+  <img src="./screenshot/getLocationFromMap.jpeg">
+
+- Notify the user about the takes in the location
+  <img src="./screenshot/notifecation.jpeg">
+
 </p>
 
 
-# TO-DO-in-location
+ [apk](./assets/app-debug.apk)
