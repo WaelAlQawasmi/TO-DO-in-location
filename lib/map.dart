@@ -69,7 +69,7 @@ class _MapSampleState extends State<MapSample> {
           SizedBox(
             width: 40,
             height: 40,
-            child: Image.network(''),
+            child: Image.asset('assets/images/location_icon.png'),
           )
         ],
       ),

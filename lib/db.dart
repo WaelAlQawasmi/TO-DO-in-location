@@ -45,17 +45,21 @@ class DBHelper {
     return queryResult.map((e) => NotesModel.fromMap(e)).toList();
   }
 
-  Future<List<NotesModel>> postionNotes(var long) async {
+  Future<List<NotesModel>> postionNotes(var long, var lat) async {
     // get a reference to the database
     var dbClient = await db;
 
 
     // raw query
     List<Map<String, Object?>>? queryResult = await dbClient?.rawQuery(
-        'SELECT * FROM notes WHERE email=?', [long]);
-    if (queryResult == null) {
+        'SELECT * FROM notes WHERE email=? and age=?', [long, lat]);
+    if(queryResult?.length==0){
+
+
+    }
+    if (queryResult?.length==0 || queryResult ==null) {
       final List<Map<String, Object?>> queryResult2 =
-      await dbClient!.query('notes');
+      await dbClient!.query('note');
       return queryResult2.map((e) => NotesModel.fromMap(e)).toList();
     }
     else {

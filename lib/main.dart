@@ -31,6 +31,10 @@ class MyApp extends StatelessWidget {
           )
       ),
       home: const MyHomePage(),
+      routes: {
+        'Home':(context)=>MyHomePage(),
+
+      },
       debugShowCheckedModeBanner: false,
     );
   }
@@ -56,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
     dbHelper = DBHelper();
     loadData();
      _getMyLocation();
-    loadPostionNotes(_myLocation?.longitude.toStringAsFixed(3));
+    loadPostionNotes(_myLocation?.longitude.toStringAsFixed(3),_myLocation?.latitude.toStringAsFixed(3));
     print(_myLocation?.longitude.toString());
     timer = Timer.periodic(Duration(seconds: 15), (Timer t) => setData());
   }
@@ -68,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void setData() {
     _getMyLocation();
-    loadPostionNotes(_myLocation?.longitude.toStringAsFixed(3));
+    loadPostionNotes(_myLocation?.longitude.toStringAsFixed(3),_myLocation?.latitude.toStringAsFixed(3));
     setState(() {
 
     });
@@ -83,8 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
     noteList = dbHelper!.getCartListWithUserId();
   }
 
-  loadPostionNotes(var long) {
-    PostionNotes = dbHelper!.postionNotes(long);
+  loadPostionNotes(var long ,var lat) {
+    PostionNotes = dbHelper!.postionNotes(long,lat);
   }
 
   @override
